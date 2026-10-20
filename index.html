@@ -29,6 +29,8 @@ a.app:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .icon{flex:none;width:56px;height:56px;border-radius:14px;display:grid;place-items:center;background:var(--accent);color:var(--card);font-family:"Klee One",serif;font-size:2rem;font-weight:600}
 .name{display:block;font-weight:700;font-size:1.1rem}
 .desc{display:block;color:var(--muted);font-size:.92rem;line-height:1.45;margin-top:2px}
+.more{display:inline-block;margin:8px 0 0 16px;color:var(--accent);font-weight:700;font-size:.95rem;text-underline-offset:3px}
+.more:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
 </style>
 </head>
 <body>
@@ -40,7 +42,7 @@ a.app:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
       <span class="icon" aria-hidden="true">あ</span>
       <span><span class="name">Hiragana drill</span>
       <span class="desc">Spaced-repetition practice for reading, writing and listening to hiragana.</span></span>
-    </a></li>
+    </a><a class="more" href="hiragana/how-it-works.html">How it works</a></li>
   </ul>
 </main>
 </body>
