@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>nooogle</title>
+<meta name="description" content="Small web apps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700&family=Klee+One:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF0EA; --card:#FAFBF7; --ink:#1C2333; --muted:#5F6674; --line:#CDD2C6; --accent:#27407A;
+  --ui:"Zen Maru Gothic","Hiragino Maru Gothic ProN",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--paper:#12161E; --card:#1B212C; --ink:#E6E9EF; --muted:#9AA1AE; --line:#2E3644; --accent:#93ABEA;}
+}
+:root[data-theme="dark"]{--paper:#12161E; --card:#1B212C; --ink:#E6E9EF; --muted:#9AA1AE; --line:#2E3644; --accent:#93ABEA;}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--ui);font-weight:500;-webkit-text-size-adjust:100%}
+main{max-width:520px;margin:0 auto;padding:calc(28px + env(safe-area-inset-top,0px)) 16px calc(36px + env(safe-area-inset-bottom,0px))}
+h1{font-size:1.6rem;margin:0 0 4px;font-weight:700}
+.sub{color:var(--muted);margin:0 0 24px;line-height:1.5}
+ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+a.app{display:flex;align-items:center;gap:16px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;color:inherit;text-decoration:none}
+a.app:hover{border-color:var(--accent)}
+a.app:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.icon{flex:none;width:56px;height:56px;border-radius:14px;display:grid;place-items:center;background:var(--accent);color:var(--card);font-family:"Klee One",serif;font-size:2rem;font-weight:600}
+.name{display:block;font-weight:700;font-size:1.1rem}
+.desc{display:block;color:var(--muted);font-size:.92rem;line-height:1.45;margin-top:2px}
+</style>
+</head>
+<body>
+<main>
+  <h1>nooogle</h1>
+  <p class="sub">Small apps for learning and getting about.</p>
+  <ul>
+    <li><a class="app" href="hiragana/">
+      <span class="icon" aria-hidden="true">あ</span>
+      <span><span class="name">Hiragana drill</span>
+      <span class="desc">Spaced-repetition practice for reading, writing and listening to hiragana.</span></span>
+    </a></li>
+  </ul>
+</main>
+</body>
+</html>
