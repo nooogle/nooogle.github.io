@@ -4,25 +4,27 @@
 Run it from the top of the repo whenever you add, rename or remove a file in hiragana/,
 or change any voice clips. Pass a new version name so phones fetch the new set:
 
-    python3 tools/make_sw.py hiragana hiragana/sw.js hiragana-2026-10-21b
+    python3 tools/make_sw.py hiragana hiragana/sw.js 2026-10-21b
 """
 import sys, json, os
 root, out, version = sys.argv[1], sys.argv[2], sys.argv[3]
 files = ['./']
-for d in ['', 'css', 'js', 'js/screens', 'vendor', 'audio']:
+for d in ['', 'css', 'js', 'js/screens', 'vendor', 'icons', 'audio']:
     p = os.path.join(root, d)
     for f in sorted(os.listdir(p)):
         full = os.path.join(p, f)
-        if os.path.isfile(full) and f.split('.')[-1] in ('html', 'css', 'js', 'mjs', 'mp3') and f != 'sw.js':
+        if os.path.isfile(full) and f.split('.')[-1] in ('html', 'css', 'js', 'mjs', 'mp3', 'png', 'webmanifest') and f != 'sw.js':
             files.append(os.path.join(d, f) if d else f)
 sw = """// Offline cache for Hiragana drill: every page, script, stylesheet and voice clip is stored on the phone.
 // Pages, scripts and styles are fetched fresh whenever there's signal (and the saved copy is updated),
 // so code updates arrive straight away and old and new files never get mixed.
 // Voice clips are taken from the cache first. Change VERSION when the clips change, or files are added.
-const VERSION='%s';
+// A preview copy (under /preview/) keeps its own caches, so it can never clear the real app's.
+const PREFIX=self.registration.scope.includes('/preview/')?'hiragana-preview-':'hiragana-';
+const VERSION=PREFIX+'%s';
 const FILES=%s;
 self.addEventListener('install',e=>{e.waitUntil(caches.open(VERSION).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));});
-self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('hiragana-')&&k!==VERSION).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
+self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith(PREFIX)&&k!==VERSION&&(PREFIX!=='hiragana-'||!k.startsWith('hiragana-preview-'))).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',e=>{
   const req=e.request,url=new URL(req.url);
   if(req.method!=='GET'||url.origin!==location.origin)return;
