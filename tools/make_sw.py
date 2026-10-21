@@ -9,11 +9,11 @@ or change any voice clips. Pass a new version name so phones fetch the new set:
 import sys, json, os
 root, out, version = sys.argv[1], sys.argv[2], sys.argv[3]
 files = ['./']
-for d in ['', 'css', 'js', 'js/screens', 'vendor', 'audio']:
+for d in ['', 'css', 'js', 'js/screens', 'vendor', 'icons', 'audio']:
     p = os.path.join(root, d)
     for f in sorted(os.listdir(p)):
         full = os.path.join(p, f)
-        if os.path.isfile(full) and f.split('.')[-1] in ('html', 'css', 'js', 'mjs', 'mp3') and f != 'sw.js':
+        if os.path.isfile(full) and f.split('.')[-1] in ('html', 'css', 'js', 'mjs', 'mp3', 'png', 'webmanifest') and f != 'sw.js':
             files.append(os.path.join(d, f) if d else f)
 sw = """// Offline cache for Hiragana drill: every page, script, stylesheet and voice clip is stored on the phone.
 // Pages, scripts and styles are fetched fresh whenever there's signal (and the saved copy is updated),
