@@ -135,40 +135,40 @@ export function noSound(){sess.noSound=true;renderCard();toast('Sound off for th
 // ----- Writing cards -----
 export function clearDrawing(){const cv=document.getElementById('cv');if(cv&&cv.clear)cv.clear();}
 
-/** "Check" on a writing card: show the right kana over the drawing, and its stroke order animated in its own box,
+/** "Check" on a writing card: draw the right kana's strokes in red over the drawing, one at a time in order,
  *  then ask for a self-mark. Tapping the box plays the animation again. */
 export function checkWriting(){
-  document.getElementById('model').classList.add('show');
-  document.getElementById('cv').dataset.locked='1';
+  const cv=document.getElementById('cv');cv.dataset.locked='1';
   const k=sess.queue[sess.pos].split('|')[0];
-  document.getElementById('wbtns').insertAdjacentHTML('beforebegin',`<button class="ans" id="ans" data-act="strokes" aria-label="Correct answer: ${k}. Tap to see the stroke order again"><span class="kana">${k}</span></button>`);
-  replayStrokes();
-  document.getElementById('ans').scrollIntoView({block:'nearest'});
+  cv.insertAdjacentHTML('afterend',`<button class="trace" id="trace" data-act="strokes" aria-label="Correct answer: ${k}. Tap to see the stroke order again"></button>`);
+  if(!replayStrokes())document.getElementById('model').classList.add('show'); // no stroke data: show the plain kana instead
   document.getElementById('wbtns').innerHTML=`<button class="secondary" data-act="self" data-ok="0">Not quite</button><button class="primary" data-act="self" data-ok="1">Got it</button>`;
   showTips();
 }
 
-/** Play the stroke order animation in the answer box (if the stroke data is missing, the plain kana stays). */
+/** Play the stroke order animation over the drawing. Returns false if there's no stroke data for this kana. */
 export function replayStrokes(){
-  const box=document.getElementById('ans');
-  if(box&&sess)playStrokes(box,sess.queue[sess.pos].split('|')[0]);
+  const box=document.getElementById('trace');
+  return !!(box&&sess&&playStrokes(box,sess.queue[sess.pos].split('|')[0]));
 }
 
-/** The self-mark on a writing card. Either way, offer more goes at it before moving on. */
+/** The self-mark on a writing card. "Got it" moves straight on; "Not quite" shows the hint and offers more goes at it. */
 export function selfGrade(ok){
   if(sess.answered)return;sess.answered=true;
   const k=sess.queue[sess.pos].split('|')[0];
   record(sess.queue[sess.pos],ok);
-  // "Not quite" also shows the hint
-  document.getElementById('wbtns').outerHTML=`${ok?'':hintBox(k)}<div class="btns2" id="wbtns"><button class="secondary" data-act="practise">Practise</button><button class="primary" data-act="next">Next</button></div>`;
+  if(ok){next();return;}
+  document.getElementById('wbtns').outerHTML=`${hintBox(k)}<div class="btns2" id="wbtns"><button class="secondary" data-act="practise">Practise</button><button class="primary" data-act="next">Next</button></div>`;
   {const nx=document.querySelector('#wbtns [data-act="next"]');if(nx&&nx.scrollIntoView)nx.scrollIntoView({block:'nearest',behavior:'smooth'});}
   showTips();
 }
 
-/** "Practise": wipe the drawing, but leave the faint kana showing, to draw over it again. Doesn't change the mark. */
+/** "Practise": wipe the drawing, but leave the red strokes showing, to draw over them again. Doesn't change the mark.
+ *  The strokes stop catching taps (so no replay) while drawing. */
 export function practiseWriting(){
   const cv=document.getElementById('cv');if(!cv)return;
   cv.clear();delete cv.dataset.locked;
+  const tr=document.getElementById('trace');if(tr)tr.classList.add('practising');
 }
 
 function renderDone(){
