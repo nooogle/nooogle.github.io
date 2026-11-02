@@ -1,22 +1,33 @@
 # nooogle.github.io
 
-A GitHub Pages site holding a collection of small, independent web apps. Right now there's one (the hiragana drill), but more will follow and they won't necessarily be about learning Japanese, so keep things general at the top level.
+The home page of nooogle.github.io: a list of small, independent web apps. Each app lives in its own GitHub repo and is
+published by GitHub Pages at `https://nooogle.github.io/<repo-name>/`. This repo is only the home page at the top of
+the site, so keep things general here: the apps won't all be about learning Japanese.
+
+## The apps
+
+- **hiragana**: the Hiragana drill, in the `nooogle/hiragana` repo (locally `../hiragana`), at <https://nooogle.github.io/hiragana/>.
 
 ## Layout
 
-- `index.html`: the home page, a list of the apps. Add a card here when a new app goes in.
-- `<app>/`: each app lives in its own folder (e.g. `hiragana/`) and is self-contained: its own CSS, JS, assets, manifest and service worker. Apps don't share code with each other.
-- `<app>/README.md`: developer notes for that app. Read it before working on the app.
-- `preview/`: temporary copies of work in progress for trying on a phone. See `preview/README.md`. Delete the copy once the work is merged.
-- `tools/`: small helper scripts (e.g. `make_sw.py`, which rebuilds the hiragana offline cache list).
+- `index.html`: the home page, a card per app. Add a card here when a new app goes live.
+- `favicon-48.png`: the home page's icon.
 - `.nojekyll`: tells GitHub Pages to serve files as they are.
 
-## Conventions
+## Adding a new app
+
+1. Make a new public repo named after the app's address (e.g. `my-tool` for `https://nooogle.github.io/my-tool/`), with the app at its top level and a `.nojekyll` file.
+2. Turn on Pages for it (Settings → Pages → deploy from the `main` branch, root folder).
+3. Add a card for it to `index.html` here.
+
+Don't make a folder here with the same name as an app's repo: the two would claim the same address.
+
+## Conventions (for the home page and every app)
 
 - Plain HTML, CSS and JavaScript (ES modules), with no build step and no npm. GitHub Pages serves the files exactly as committed.
 - Third-party code is copied into the app's `vendor/` folder, pinned to a version, with its licence alongside.
 - Pages should work well on a phone first, and support light and dark mode (colours as CSS variables on `:root`).
-- Keep each app's `localStorage` keys and caches namespaced to that app so apps (and previews) never clash.
+- All the apps share one browser storage space (they're all on nooogle.github.io), so each app's `localStorage` keys and caches must be namespaced to that app.
 - Explanations and docs are written in plain, friendly English for a non-specialist reader.
 
 ## Running locally
@@ -25,8 +36,4 @@ A GitHub Pages site holding a collection of small, independent web apps. Right n
 python3 -m http.server 8000
 ```
 
-Then open <http://localhost:8000/>. Opening the HTML files directly won't work, because browsers block ES modules from `file://`.
-
-## App-specific notes
-
-- **hiragana/**: see `hiragana/README.md`. In short: if you add, rename or remove a file, or change a voice clip, rerun `tools/make_sw.py` with a new version name. Don't break the saved progress format without adding a migration.
+Then open <http://localhost:8000/>. The app links won't work locally, since the apps are in their own repos.
