@@ -7,6 +7,7 @@ the site, so keep things general here: the apps won't all be about learning Japa
 ## The apps
 
 - **hiragana**: the Hiragana drill, in the `nooogle/hiragana` repo (locally `../hiragana`), at <https://nooogle.github.io/hiragana/>.
+- **katakana**: the Katakana drill, the Hiragana drill's sister, in the `nooogle/katakana` repo (locally `../katakana`), at <https://nooogle.github.io/katakana/>.
 
 ## Layout
 
